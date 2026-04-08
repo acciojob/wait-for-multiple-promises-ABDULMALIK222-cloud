@@ -1,32 +1,25 @@
-// Function to create a promise with random delay (1–3 sec)
 function createPromise() {
-  const delay = Math.random() * 2000 + 1000; // 1000–3000 ms
+  const delay = Math.random() * 2000 + 1000;
 
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(delay / 1000); // convert to seconds
+      resolve(delay / 1000);
     }, delay);
   });
 }
 
-// Create 3 promises
 const promise1 = createPromise();
 const promise2 = createPromise();
 const promise3 = createPromise();
 
-const startTime = performance.now();
-
 Promise.all([promise1, promise2, promise3])
   .then((results) => {
-    const endTime = performance.now();
-    const totalTime = (endTime - startTime) / 1000;
-
     const tbody = document.getElementById("output");
 
-    // Remove loading row
+    // Remove loading
     tbody.innerHTML = "";
 
-    // Add rows for each promise
+    // Add promise rows
     results.forEach((time, index) => {
       const row = document.createElement("tr");
 
@@ -41,19 +34,19 @@ Promise.all([promise1, promise2, promise3])
       tbody.appendChild(row);
     });
 
-    // Add total row
+    // ✅ FIXED TOTAL
+    const totalTime = Math.max(...results);
+
     const totalRow = document.createElement("tr");
 
-    const totalCol1 = document.createElement("td");
-    totalCol1.textContent = "Total";
+    const col1 = document.createElement("td");
+    col1.textContent = "Total";
 
-    const totalCol2 = document.createElement("td");
-    totalCol2.textContent = totalTime.toFixed(3);
+    const col2 = document.createElement("td");
+    col2.textContent = totalTime.toFixed(3);
 
-    totalRow.appendChild(totalCol1);
-    totalRow.appendChild(totalCol2);
+    totalRow.appendChild(col1);
+    totalRow.appendChild(col2);
     tbody.appendChild(totalRow);
   })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
+  .catch((err) => console.log(err));
