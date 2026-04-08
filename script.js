@@ -1,5 +1,5 @@
 function createPromise() {
-  const delay = Math.random() * 2000 + 1000;
+  const delay = Math.random() * 1000 + 2000; // 2–3 sec
 
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -15,11 +15,8 @@ const promise3 = createPromise();
 Promise.all([promise1, promise2, promise3])
   .then((results) => {
     const tbody = document.getElementById("output");
-
-    // Remove loading
     tbody.innerHTML = "";
 
-    // Add promise rows
     results.forEach((time, index) => {
       const row = document.createElement("tr");
 
@@ -34,7 +31,6 @@ Promise.all([promise1, promise2, promise3])
       tbody.appendChild(row);
     });
 
-    // ✅ FIXED TOTAL
     const totalTime = Math.max(...results);
 
     const totalRow = document.createElement("tr");
@@ -48,5 +44,4 @@ Promise.all([promise1, promise2, promise3])
     totalRow.appendChild(col1);
     totalRow.appendChild(col2);
     tbody.appendChild(totalRow);
-  })
-  .catch((err) => console.log(err));
+  });
